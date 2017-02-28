@@ -91,39 +91,49 @@ table.CodeRay td.code>pre{padding:0}
 <section><section id="_local_repository"><h2>Local repository</h2></section><section id="_exo"><h2>exo</h2><div class="ulist"><ul><li class="fragment"><p>Créer un repo R1</p></li><li class="fragment"><p>Valoriser le user local à user1</p></li><li class="fragment"><p>Indexer (stage) un fichier file1.txt</p></li><li class="fragment"><p>Commiter le fichier file1.txt</p></li><li class="fragment"><p>Modifier et indexer le fichier file1.txt</p></li><li class="fragment"><p>Cloner le repo R1 en un repo R2</p></li><li class="fragment"><p>Vérifier que dans R2 file1.txt ne contient pas la modification</p></li><li class="fragment"><p>Constater l&#8217;unique commit dans le repo R2</p></li></ul></div></section><section id="_solution"><h2>solution</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>$ git init R1
 $ cd R1
 R1 (master) $ git config user.name user1
-R1 (master) $ date &gt; file1.txt
-R1 (master) $ cat file1.txt
-lun. 27 févr. 2017 17:27:29
-
+R1 (master) $ echo "file1" &gt; file1.txt
+R1 (master) $ cat file1.txt //file1
 R1 (master) $ git add .
 R1 (master) $ git commit -m"add file1"
-R1 (master) $ date &gt; file1.txt
-R1 (master) $ cat file1.txt
-lun. 27 févr. 2017 17:28:31
-
+R1 (master) $ echo "update file1" &gt; file1.txt
+R1 (master) $ cat file1.txt //update file1
 R1 (master) $ git add .
 R1 (master) $ cd ..
-
 $ git clone ./R1/ R2
 $ cd R2
-R2 (master) $ cat file1.txt
-lun. 27 févr. 2017 17:27:29
-
-R2 (master) $ git log</code></pre></div></div></section></section>
-<section><section id="_repo_distant"><h2>repo distant</h2></section><section id="_exo_2"><h2>exo</h2><div class="ulist"><ul><li class="fragment"><p>Créer un repo remote: git init repo-remote --bare</p></li><li class="fragment"><p>Cloner ce repo-remote dans un repo local nommé repo-local</p></li><li class="fragment"><p>Ajouter et commiter un fichier file1.txt dans repo-remote</p></li><li class="fragment"><p>Créer une branche develop dans repo-local</p></li><li class="fragment"><p>modifier et commiter file1.txt dans develop</p></li><li class="fragment"><p>"pusher" cette nouvelle branche dans repo-remote</p></li><li class="fragment"><p>visualiser la nouvelle dans repo-remote</p></li></ul></div></section><section id="_solution_2"><h2>solution</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>$ git init repo-remote --bare
-$ git clone ./repo-remote repo-local
-$ cd repo-local/
-repo-local (master)  $ date &gt; file.txt
-repo-local (master)  $ git add .
-repo-local (master)  $ git commit -m "file1.txt"
-repo-local (master)  $ git branch develop
-repo-local (master)  $ git checkout develop
-repo-local (develop) $ date &gt; file1.txt
-repo-local (develop) $ git add .
-repo-local (develop) $ git commit -m "update file1.txt"
-repo-local (develop) $ git push origin develop
-$ cd ../repo-remote
-repo-remote (BARE:master) $ git branch -a -vv</code></pre></div></div></section></section></div></div><script src="reveal.js-3.1.0/lib/js/head.min.js"></script><script src="reveal.js-3.1.0/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+R2 (master) $ cat file1.txt //file1
+R2 (master) $ git log</code></pre></div></div></section><section id="_solution_visualisation_des_repos"><h2>Solution visualisation des repos</h2><div class="paragraph"><p><span class="image"><img src="images/tp1-exo1-R1.png" alt="tp1 exo1 R1" width="450" height="400" /></span>
+<span class="image"><img src="images/tp1-exo1-R2.png" alt="tp1 exo1 R2" width="450" height="400" /></span></p></div></section></section>
+<section><section id="_repo_distant"><h2>repo distant</h2></section><section id="_exo_1"><h2>exo 1</h2><div class="ulist"><ul><li class="fragment"><p>Créer un repo "bare": git init repo-shared --bare</p></li><li class="fragment"><p>Cloner ce repo-shared dans un repo local nommé RL1</p></li><li class="fragment"><p>Ajouter et commiter un fichier file1.txt dans RL1</p></li><li class="fragment"><p>Créer une branche develop dans RL1</p></li><li class="fragment"><p>Modifier et commiter file1.txt dans develop</p></li><li class="fragment"><p>"Pusher" master et develop dans repo-shared</p></li><li class="fragment"><p>Visualiser la nouvelle branche dans repo-shared</p></li></ul></div></section><section id="_solution_exo_1"><h2>solution exo 1</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>$ git init repo-shared --bare
+$ git clone ./repo-shared RL1
+$ cd RL1/
+RL1 (master)  $ date &gt; file1.txt
+RL1 (master)  $ git add .
+RL1 (master)  $ git commit -m "file1.txt"
+RL1 (master)  $ git branch develop
+RL1 (master)  $ git checkout develop
+RL1 (develop) $ date &gt; file1.txt
+RL1 (develop) $ git add .
+RL1 (develop) $ git commit -m "update file1.txt"
+RL1 (develop) $ git push origin master
+RL1 (develop) $ git push origin develop
+$ cd ../repo-shared
+repo-shared (BARE:master) $ git branch -a -vv</code></pre></div></div></section><section id="_exo_2"><h2>exo 2</h2><div class="ulist"><ul><li class="fragment"><p>Initialiser un repo local nommé RL2</p></li><li class="fragment"><p>Ajouter repo-shared comme nouveau remote (alias origin)</p></li><li class="fragment"><p>Synchroniser les références (miroirs) des branches distantes</p></li><li class="fragment"><p>Visualiser toutes les branches</p></li><li class="fragment"><p>Ajouter et commiter un fichier file2.txt dans develop</p></li><li class="fragment"><p>"Pusher" develop dans repo-shared</p></li><li class="fragment"><p>Synchroniser les branches locales de RL1</p></li><li class="fragment"><p>Visualiser le nouveau commit dans RL1</p></li></ul></div></section><section id="_solution_exo_2"><h2>solution exo 2</h2><div class="listingblock"><div class="content"><pre class="CodeRay"><code>$ git init RL2
+$ cd RL2
+RL2 (master) $ git remote add origin ../repo-shared/
+RL2 (master) $ git fetch origin
+RL2 (master) $ git branch -a -vv
+RL2 (master) $ git checkout develop
+RL2 (develop) $ date &gt; file2.txt
+RL2 (develop) $ git add .
+RL2 (develop) $ git commit -m"add file2"
+RL2 (develop) $ git push origin develop
+$ cd ../RL1
+RL1 (develop) $ git fetch origin
+RL1 (develop) $ git rebase origin/develop
+RL1 (develop) $ git log</code></pre></div></div></section><section id="_historique_des_repos"><h2>historique des repos</h2><div class="paragraph"><p><span class="image"><img src="images/tp2-exo2-R1.png" alt="tp2 exo2 R1" width="450" height="250" /></span>
+<span class="image"><img src="images/tp2-exo2-R2.png" alt="tp2 exo2 R2" width="450" height="250" /></span>
+<span class="image"><img src="images/tp2-exo2-shared.png" alt="tp2 exo2 shared" width="450" height="250" /></span></p></div></section></section></div></div><script src="reveal.js-3.1.0/lib/js/head.min.js"></script><script src="reveal.js-3.1.0/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
 Reveal.initialize({
   // Display controls in the bottom right corner
   controls: true,
